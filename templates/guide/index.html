@@ -1,0 +1,59 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Wizard Guide</title>
+		<style>
+			body {
+				background-color: grey;
+			}
+			#main {
+				width: 600px;
+				height: 600px;
+				background-color: white;
+				margin: 50px auto;
+			}
+			.content {
+				height: 500px;
+				overflow: auto;
+				padding: 30px;
+			}
+			#navigation-buttons {
+			}
+		</style>
+		<script>
+			function create() {
+				var page = document.getElementById("numberChooser");
+				page.style.display = "none";
+				page = document.getElementById("textInput");
+				page.style.display = "block";
+				pagesToCreate = document.getElementById("numberOfPagesRequested").value;
+				for (i = 0;i < pagesToCreate;i++) {
+					document.getElementById("textAreas").insertAdjacentHTML("beforeend", '<p><textarea rows="4" cols="50" name="page' + String(i + 1) + '">page ' + String(i + 1) + ' text goes here</textarea></p>');
+				}
+			}
+		</script>
+				
+	</head>
+	<body>
+		<div id="main">
+				<div id="numberChooser" class="content">
+					<center>
+						<p>How many pages do you want in the wizard guide?</p>
+						<p><input type="number" id="numberOfPagesRequested" name="quantity" min="1" max="99" value="5"></p>
+						<button type="button" onclick="create()">next step</button>
+					</center>
+				</div>
+				<div id="textInput" class="content" style="display:none;">
+					<center>
+						<form id=textAreas action="/" method="post">
+							{% csrf_token %}
+							<input type="submit" value="submit">
+						</form>
+					</center>
+				</div>
+		</div>
+	</body>
+</html>
+<head>

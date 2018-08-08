@@ -1,0 +1,82 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Wizard Guide</title>
+		<style>
+			body {
+				background-color: grey;
+			}
+			#main {
+				width: 600px;
+				height: 600px;
+				background-color: white;
+				margin: 50px auto;
+			}
+			.content {
+			}
+			#navigation-buttons {
+				padding: 10px;
+			}
+			.top {
+				height: 420px;
+				overflow: auto;
+				padding: 30px;
+			}
+			.bottom {
+				padding: 10px;
+			}
+			canvas {
+				background-color: black;
+			}
+		</style>
+		<script>
+			var currentPage = 1;
+			var totalPages = {{totalPages}};
+			function setup() {
+				var page = document.getElementById("page1");
+				page.style.display = "block";
+			}
+			function previous() {
+				if (currentPage == 1)
+					return;
+				var page = document.getElementById("page" + String(currentPage));
+				page.style.display = "none";
+				currentPage--;
+				page = document.getElementById("page" + String(currentPage));
+				page.style.display = "block";
+			}
+			function next() {
+				if (currentPage == totalPages)
+					return;
+				var page = document.getElementById("page" + String(currentPage));
+				page.style.display = "none";
+				currentPage++;
+				page = document.getElementById("page" + String(currentPage));
+				page.style.display = "block";
+			}
+		</script>
+				
+	</head>
+	<body onload="setup()">
+		<div id="main">
+			{% for page in pages %}
+				<div id="page{{page.number}}" class="content" style="display:none;">
+					<div class="top">
+						<canvas width="{{page.imageWidth}}" height="{{page.imageHeight}}"></canvas>
+						<p> {{ page.text }}</p>
+					</div>
+					<div class="bottom">
+						<p> Page {{ page.number }} / {{totalPages}}</p>
+					</div>
+				</div>
+			{% endfor %}
+			<div id="navigation-buttons">
+				<button type="button" onclick="previous()">previous</button>
+				<button type="button" onclick="next()">next</button>
+			</div>
+		</div>
+	</body>
+</html>
+<head>
